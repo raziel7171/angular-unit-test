@@ -1,1 +1,12 @@
-<p>others works!</p>
+<section>
+    <h3>Directives</h3>
+    <h5 highlight>Default</h5>
+    <h5 highlight="yellow">Value:</h5>
+    <input type="text" [(ngModel)]="color" [highlight]="color">
+    <p>others works!</p>
+
+    <h3>Pipe</h3>
+    <p>{{ 'my texto' | reverse }}</p>
+    <input type="text" [(ngModel)]="text">
+    <p>{{ text | reverse }}</p>
+</section>
