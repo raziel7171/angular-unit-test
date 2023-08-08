@@ -8,6 +8,7 @@ describe('MasterService', () => {
   let valueServiceSpy: jasmine.SpyObj<ValueService>;
 
   beforeEach(() => {
+    //getvalue it's in an array because can be many functions to be spyed on
     const spyService = jasmine.createSpyObj('ValueService', ['getValue']);
     TestBed.configureTestingModule({
       providers: [

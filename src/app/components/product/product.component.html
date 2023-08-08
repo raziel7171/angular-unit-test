@@ -1,0 +1,8 @@
+<div *ngIf="product">
+    <figure>
+        <img src="https://picsum.photos/id/{{product.id+500}}/300/250/?blur" alt="">
+        <figcaption>
+            {{product.title}} - {{product.price}}
+        </figcaption>
+    </figure>
+</div>

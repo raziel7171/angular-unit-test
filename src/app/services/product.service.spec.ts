@@ -8,7 +8,6 @@ import { HTTP_INTERCEPTORS, HttpStatusCode } from '@angular/common/http';
 import { TokenInterceptor } from '../interceptors/token.interceptor';
 import { TokenService } from './token.service';
 
-
 describe('ProductService', () => {
   let productService: ProductService;
   let httpController: HttpTestingController;
@@ -17,6 +16,7 @@ describe('ProductService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        HttpClientTestingModule,
         ProductService,
         TokenService,
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
@@ -38,17 +38,6 @@ describe('ProductService', () => {
   describe('test for getAllSimple', () => {
     it('should return a product list', (doneFn) => {
       // Arrange
-      // const mockData: Product[] = [{
-      //   id: '1',
-      //   title: 'titulo',
-      //   price: 12,
-      //   description: 'descri',
-      //   category: {
-      //     id: 111,
-      //     name: 'as'
-      //   },
-      //   images: ['img', 'img'],
-      // }];
       const mockData: Product[] = generateManyProducts(5);
       //con spyOn solo se crea el spy para ver una función en específico en este caso getToken
       spyOn(tokenService, 'getToken').and.returnValue('123');
