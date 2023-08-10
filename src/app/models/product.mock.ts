@@ -25,6 +25,6 @@ export const generateManyProducts = (size = 10): Product[] => {
     products.push(generateOneProduct());
   }
 
-  return products;
+  return [...products];
 
 }

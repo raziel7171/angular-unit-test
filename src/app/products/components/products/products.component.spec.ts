@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { of, defer } from 'rxjs';
 import { ProductsComponent } from './products.component';
-import { ProductComponent } from '../product/product.component';
 import { ProductService } from 'src/app/services/product.service';
 import { ValueService } from 'src/app/services/value.service';
 import { generateManyProducts } from 'src/app/models/product.mock';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
+import { ProductComponent } from '../product/product.component';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -103,7 +103,7 @@ describe('ProductsComponent', () => {
   describe('test for callPromise', () => {
     it('should call for a promise', async () => {
       //Arrange
-      const mockMessage = 'mock promise'
+      const mockMessage = 'mock promise';
       valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMessage)); //force a promise to be returned
       //Act
       await component.callPromise();
@@ -115,7 +115,7 @@ describe('ProductsComponent', () => {
 
     it('should show "mock promise" into <p> when the button with the function is clicked', fakeAsync(() => {
       //Arrange
-      const mockMessage = 'mock promise'
+      const mockMessage = 'mock promise';
       valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMessage));
       const btnDebug = fixture.debugElement.query(By.css('.btn-promise'));
       //Act

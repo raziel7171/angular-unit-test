@@ -8,10 +8,12 @@ export class HighlightDirective implements OnChanges {
   defaultColor = 'gray';
   @Input('highlight') bgColor = '';
 
-  constructor(private element: ElementRef) { this.element.nativeElement.style.backgroundColor = this.defaultColor }
-
-  ngOnChanges(): void {
-    this.element.nativeElement.style.backgroundColor = this.bgColor || this.defaultColor
+  constructor(private element: ElementRef) {
+    element.nativeElement.style.customProperty = true;
   }
 
+  ngOnChanges(): void {
+    this.element.nativeElement.style.backgroundColor =
+      this.bgColor || this.defaultColor;
+  }
 }

@@ -12,6 +12,7 @@ describe('ProductService', () => {
   let productService: ProductService;
   let httpController: HttpTestingController;
   let tokenService: TokenService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -171,7 +172,7 @@ describe('ProductService', () => {
   describe('test for update', () => {
     it('should return the updated product', (doneFn) => {
       // Arrange
-      const mockData = generateOneProduct();
+      const mockData: Product = generateOneProduct();
       //data transfer object it's a partial object to be easier to carry on typed language like typescript, in this example we have updateDTO and createDTO in the backend you don't know or need the id of the user that's about to be created
       const id = '1';
       const dto: UpdateProductDTO = {
