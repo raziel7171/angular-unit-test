@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { of, defer } from 'rxjs';
+import { of } from 'rxjs';
 import { ProductsComponent } from './products.component';
 import { ProductService } from 'src/app/services/product.service';
 import { ValueService } from 'src/app/services/value.service';
@@ -7,6 +7,7 @@ import { generateManyProducts } from 'src/app/models/product.mock';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { ProductComponent } from '../product/product.component';
+import { asyncData, asyncError, mockObservable } from 'src/testing';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -32,7 +33,7 @@ describe('ProductsComponent', () => {
 
     //si deseo delegar la creación de los mocks en cada prueba, muevo (o copio para reemplazar) el código de abajo para cada prueba
     const productsMock = generateManyProducts(5);
-    productService.getAll.and.returnValues(of(productsMock));
+    productService.getAll.and.returnValues(mockObservable(productsMock));
     fixture.detectChanges(); //ngOnInit
   });
 
@@ -47,7 +48,7 @@ describe('ProductsComponent', () => {
       //Arrange
       const productsMock = generateManyProducts(20);
       const currentProductsCount = component.products.length + productsMock.length;
-      productService.getAll.and.returnValue(of(productsMock));
+      productService.getAll.and.returnValue(mockObservable(productsMock));
       //Act
       //a good practice is not to call the method directly but if this is set to be called with a button it should be tested by triggering the click event in the test
       // component.getAllProducts();
@@ -62,7 +63,7 @@ describe('ProductsComponent', () => {
       //Arrange
       const productsMock = generateManyProducts(20);
       //of nos retorna un observable pero necesitamos retornar el observable con demora para checkear el estado en mitad del proceso de la funcion se usa DEFER
-      productService.getAll.and.returnValue(defer(() => Promise.resolve(productsMock)));
+      productService.getAll.and.returnValue(asyncData(productsMock));
       //Act
       //debemos implementar FakeAsync para controlar los pasos de este
       // component.getAllProducts();
@@ -75,6 +76,7 @@ describe('ProductsComponent', () => {
       tick(); //ejecuta los procesos pendientes: exec, obs, setTimeout, promise
       fixture.detectChanges();
       expect(component.status).toEqual('success');
+      expect(productService.getAll).toHaveBeenCalled();
 
     }));
 
@@ -82,7 +84,7 @@ describe('ProductsComponent', () => {
       //Arrange
       const mockError = new HttpErrorResponse({ status: HttpStatusCode.BadRequest });
       //resolve resuelve la solicitud pero en este caso necesitamos lanzar un error, lo hacemos con REJECT
-      productService.getAll.and.returnValue(defer(() => Promise.reject(mockError)));
+      productService.getAll.and.returnValue(asyncError(mockError));
       //Act
       //a good practice is not to call the method directly but if this is set to be called with a button it should be tested by triggering the click event in the test
       // component.getAllProducts();
