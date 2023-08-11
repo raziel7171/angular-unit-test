@@ -3,7 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { MyValidators } from './../../../utils/validators';
 
-import { UsersService } from './../../../services/user.service';
+import { UserService } from './../../../services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-register-form',
@@ -14,9 +15,9 @@ export class RegisterFormComponent implements OnInit {
   form = this.fb.group(
     {
       name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email], [MyValidators.validateEmailAsync(this.userService)]],
       password: ['', [Validators.required, Validators.minLength(6), MyValidators.validPassword]],
-      confirmPassword: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6), MyValidators.validPassword]],
       checkTerms: [false, [Validators.requiredTrue]],
     },
     {
@@ -24,9 +25,11 @@ export class RegisterFormComponent implements OnInit {
     }
   );
 
+  status: 'loading' | 'success' | 'error' | 'init' = 'init';
+
   constructor(
     private fb: FormBuilder,
-    private usersService: UsersService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void { }
@@ -34,10 +37,18 @@ export class RegisterFormComponent implements OnInit {
   register(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
+      this.status = 'loading';
       const value: any = this.form.value;
-      this.usersService.create(value)
-        .subscribe((rta) => {
-          console.log(rta);
+      this.userService.create(value)
+        .subscribe({
+          next: (rta: User) => {
+            this.status = 'success';
+            console.log(rta);
+          },
+          error: (error) => {
+            this.status = 'error';
+            console.log(error);
+          }
         });
     } else {
       this.form.markAllAsTouched();

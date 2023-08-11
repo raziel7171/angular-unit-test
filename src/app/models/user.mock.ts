@@ -1,13 +1,13 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import { User } from './user.model';
 
 export const generateOneUser = (): User => {
   return {
-    id: faker.datatype.uuid(),
+    id: faker.string.uuid(),
     email: faker.internet.email(),
     password: faker.internet.password(),
-    name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    name: `${faker.person.firstName()} ${faker.person.lastName()}`,
     role: 'customer'
   };
 }

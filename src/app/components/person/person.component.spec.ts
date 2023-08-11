@@ -3,6 +3,7 @@ import { PersonComponent } from './person.component';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Person } from 'src/app/models/person.model';
+import { clickEvent, getText, query } from 'src/testing';
 
 describe('PersonComponent', () => {
   let component: PersonComponent;
@@ -80,22 +81,23 @@ describe('PersonComponent', () => {
     //Arrange
     const expectedMsg = 'overweight level 3';
     component.person = new Person('Joseph', 'Joestar', 30, 150, 1.75);
-    const personDebug: DebugElement = fixture.debugElement;
-    const buttonDebug: DebugElement = personDebug.query(By.css('button.btn-imc'));
-    const buttonElement: HTMLElement = buttonDebug.nativeElement
+    // const personDebug: DebugElement = fixture.debugElement;
+    // const buttonDebug: DebugElement = personDebug.query(By.css('button.btn-imc')); //replaced with clickEvent
+    // const buttonElement: HTMLElement = buttonDebug.nativeElement //replaced with clickEvent
     //Act
-    buttonDebug.triggerEventHandler('click', null);
+    // buttonDebug.triggerEventHandler('click', null); //replaced with clickEvent
+    clickEvent(fixture, 'button.btn-imc');
     //trigger the click event unto the button debug element
     fixture.detectChanges();
     //Assert
-    expect(buttonElement?.textContent).toContain(expectedMsg);
+    expect(getText(fixture, 'button.btn-imc')).toContain(expectedMsg);
   });
 
   it('should raise selected event when person button its clicked', () => {
     //Arrange
     const expectedPerson = new Person('Jhonny', 'Joestar', 30, 150, 1.75);
     component.person = expectedPerson;
-    const buttonDebug: DebugElement = fixture.debugElement.query(By.css('button.btn-choose-person'));
+    const buttonDebug: DebugElement = query(fixture, 'button.btn-choose-person');
 
     let selectedPerson: Person | undefined;
     component.onSelected.subscribe(person => {
@@ -145,11 +147,10 @@ describe('Person component from HostComponent works as a foster parent', () => {
   it('should display persons name', () => {
     //Arrange
     const expectedName = component.person.name;
-    const h3Element = fixture.debugElement.query(By.css('app-person h3.personsName')).nativeElement;
     //Act
     fixture.detectChanges();
     //Assert
-    expect(h3Element.textContent).toContain(expectedName);
+    expect(getText(fixture, 'app-person h3.personsName')).toContain(expectedName);
 
   });
 });

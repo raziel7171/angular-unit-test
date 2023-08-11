@@ -7,7 +7,7 @@ import { User, CreateUserDTO } from './../models/user.model';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class UserService {
 
   private apiUrl = `${environment.API_URL}/api/v1/users`;
 

@@ -7,7 +7,7 @@ import { generateManyProducts } from 'src/app/models/product.mock';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { ProductComponent } from '../product/product.component';
-import { asyncData, asyncError, mockObservable } from 'src/testing';
+import { asyncData, asyncError, getText, mockObservable, query, queryByTestId } from 'src/testing';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -119,14 +119,21 @@ describe('ProductsComponent', () => {
       //Arrange
       const mockMessage = 'mock promise';
       valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMessage));
-      const btnDebug = fixture.debugElement.query(By.css('.btn-promise'));
+      // reemplazar el uso de clases por uso de propiedades de un elemento o ids para una mejor practica a nivel de pruebas
+
+      const btnDebug = queryByTestId(fixture, "btn-promise");
+      // const btnDebug = fixture.debugElement.query(By.css('[data-test-id="btn-promise"]'));
+      // const btnDebug = fixture.debugElement.query(By.css('.btn-promise'));
       //Act
       btnDebug.triggerEventHandler('click');
       tick();
       fixture.detectChanges();
-      const pElement = fixture.debugElement.query(By.css('.rta-promise')).nativeElement;
+      // se creó herramienta para reemplazar el fixture.debugElement.query
+      // const pElement = query(fixture, '.rta-promise').nativeElement;
+      // const pElement = fixture.debugElement.query(By.css('.rta-promise')).nativeElement;
       //Assert
-      expect(pElement.textContent).toEqual(mockMessage);
+      // expect(pElement.textContent).toEqual(mockMessage);
+      expect(getText(fixture, '.rta-promise')).toEqual(mockMessage);
     }));
   });
 });
